@@ -12,7 +12,7 @@
   //1521 DB서버로 접속 이 url이 무조건 있어야함 **
   String userid="ora_user";
   String passcode="human123";
-  String sql="insert into student values(?,?,?)";
+  String sql="delete from menu where name=?";
 %>
 <!DOCTYPE html>
 <html>
@@ -22,9 +22,10 @@
 </head>
 <body>
 <%
+//update.jsp?newname=africabean&price=3000&name=americano
 try{
-// 	if(request.getParameter("name")==null || request.getParameter("math")==null ||
-// 			request.getParameter("korean")==null){
+// 	if(request.getParameter("name")==null || request.getParameter("price")==null ||
+// 			request.getParameter("name")==request.getParameter("newname")){
 // 		out.println("적절한값이 주어지지않았습니다");
 // 		return;
 // 	}
@@ -32,9 +33,7 @@ try{
    conn=DriverManager.getConnection(url,userid,passcode); // db접속에 실패하면 null이 나옴
    pstmt=conn.prepareStatement(sql);
    
-   pstmt.setString(1,request.getParameter("name"));
-   pstmt.setInt(2,Integer.parseInt(request.getParameter("math")));
-   pstmt.setInt(3,Integer.parseInt(request.getParameter("korean")));
+   pstmt.setString(1,request.getParameter("name"));   
    
    pstmt.executeUpdate();  // insert 할때 필요한 실행코드
 } catch(Exception e){
@@ -42,7 +41,8 @@ try{
 } finally {
    if(pstmt!=null) pstmt.close();
    if(conn!=null) conn.close();
-   request.getRequestDispatcher("new_student.jsp").forward(request,response);
+//    request.getRequestDispatcher("controlmenu.jsp").forward(request,response);
+   response.sendRedirect("controlmenu.jsp");
 }
 %>
 </body>
