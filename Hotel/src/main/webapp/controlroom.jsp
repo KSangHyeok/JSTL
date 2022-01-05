@@ -23,13 +23,21 @@ String sql="select * from room order by roomcode";
 </head>
 <style>
    table{
-      border-collapse:collapse;      
+      border-collapse:collapse;  
+         
    }
    td{
-      border:2px solid black;
+/*        border:2px solid red;  */
+      border-style: dotted;
+       background-color:yellow;
+     
    }
    *{
       font-family: 'Gowun Batang', serif;
+   }
+   input{
+   	  background-color:black;
+   	  color:white;
    }
 </style>
 <body>
@@ -81,7 +89,7 @@ try{
 	<td>숙박비용</td><td><input type=number id=howmuch name=howmuch></td>
 </tr>
 <tr>
-	<td><input type=submit value='전송'></td><td><input type=reset value='비우기'></td>
+	<td align=center><input type=submit value='전송'></td><td align=center><input type=reset value='비우기'></td>
 </tr>
 </table>
 </form>
@@ -104,24 +112,3 @@ $(document)
 })
 </script>
 </html>
-
-******************************************
-$(document)
-.on('submit','#frmRoom',function(){
-   if($('#roomcode').val()!=''){ // update or delete
-      if($('#roomcode').val()!=''){  // update
-         // action = "updatemenu.jsp"
-         $('#frmRoom').prop('action','update.jsp');
-      } else{ //delete
-         $('#frmRoom').prop('action','delete.jsp');
-      }
-   } else {  // insert
-      if($('#name').val()!='' && $('#type').val()!=''
-            && $('#howmany').val!='' && $('#howmuch').val()!=''){  // just insert   
-         $('#frmRoom').prop('action','insert.jsp');
-      }else{
-         alert ('객실명과 숙박비가 모두 입력되어야 합니다.');
-         return false;
-      }
-   }
-}); 
