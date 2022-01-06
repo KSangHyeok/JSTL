@@ -7,19 +7,38 @@
 <title>객실관리</title>
 </head>
 <style>
-table {border-collapse:collapse;}
-th,td {border:1px solid blue;}
+table {border-collapse:collapse;
+		}
+th,td {border:1px solid white;
+		color:white;
+		font-weight:bold;
+		font-size:20px;}
+input {	color:black;
+		font-weight:bold;
+		font-size:20px;
+		}
+body {background-image:url(https://cdn.pixabay.com/photo/2018/02/11/09/37/matrix-full-3145364_960_720.jpg);
+		background-repeat:no-repeat;
+		background-position:center;
+ 		background-size:cover;
+ 		height:100vh;
+		}
+
 </style>
 <body>
-<table><!-- 입력부분 -->
+<table align=center><!-- 입력부분 -->
+<thead>
+<tr><th colspan=2>객실목록</th><th></th></tr>
+</thead>
 <tr><td>객실번호</td><td><input type=number id=roomcode></td></tr>
 <tr><td>객실명</td><td><input type=text id=name></td></tr>
 <tr><td>객실종류</td><td><input type=number id=type></td></tr>
 <tr><td>숙박가능인원</td><td><input type=number id=howmany></td></tr>
 <tr><td>숙박비</td><td><input type=number id=howmuch></td></tr>
-<tr><td colspan=2><input type=button id='btnGo' value='전송' align=left></td></tr>
+<tr><td colspan=2><input type=button id='btnGo' value='전송' align=right></td></tr>
 </table> 
-<table id=tblRoom> <!-- 객실목록 -->
+<br><br>
+<table id=tblRoom align=center> <!-- 객실목록 -->
 <thead>
 	<tr><th>객실번호</th><th>객실명</th><th>객실종류</th><th>숙박가능인원</th>
 		<th>숙박비</th></tr>
