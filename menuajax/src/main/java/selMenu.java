@@ -13,16 +13,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class insert
+ * Servlet implementation class selMenu
  */
-@WebServlet("/insert")
-public class insert extends HttpServlet {
+@WebServlet("/selMenu")
+public class selMenu extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public insert() {
+    public selMenu() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,7 +37,7 @@ public class insert extends HttpServlet {
 		  String url="jdbc:oracle:thin:@localhost:1521:orcl";		 
 		  String userid="ora_user";
 		  String passcode="human123";
-		  String sql="insert into menu values(seq_menu.nextval,?,?)";
+		  String sql="insert into cafe_sales values(?,?,seq_sales,?,?,?)";
 		  //String sql="insert into roomajax(roomcode,name,type,howmany,howmuch) "+
 		  //				"values(seq_roomajax.nextval,?,?,?,?)";
 		  String result_flag="";
@@ -49,8 +49,12 @@ public class insert extends HttpServlet {
 		   conn=DriverManager.getConnection(url,userid,passcode); 
 		   pstmt=conn.prepareStatement(sql);
 		   
-		   pstmt.setString(1,request.getParameter("_menuname"));		   		
-		   pstmt.setInt(2,Integer.parseInt(request.getParameter("_price")));		  
+		   pstmt.setInt(1,Integer.parseInt(request.getParameter("code")));
+		   pstmt.setInt(2,Integer.parseInt(request.getParameter("mobile")));
+		   pstmt.setInt(3,Integer.parseInt(request.getParameter("qty")));
+		   pstmt.setInt(3,Integer.parseInt(request.getParameter("_price")));
+		   pstmt.setInt(3,Integer.parseInt(request.getParameter("total")));
+		   
 		   
 		   pstmt.executeUpdate(); 
 		   result_flag="OK";
@@ -66,7 +70,6 @@ public class insert extends HttpServlet {
 			  }
 		  }
 	}
-	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

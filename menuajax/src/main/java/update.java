@@ -13,16 +13,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class insert
+ * Servlet implementation class update
  */
-@WebServlet("/insert")
-public class insert extends HttpServlet {
+@WebServlet("/update")
+public class update extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public insert() {
+    public update() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,26 +31,28 @@ public class insert extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
+		  response.setContentType("text/html, charset=utf-8");
 		Connection conn=null;
 		  PreparedStatement pstmt=null;
 		 
 		  String url="jdbc:oracle:thin:@localhost:1521:orcl";		 
 		  String userid="ora_user";
 		  String passcode="human123";
-		  String sql="insert into menu values(seq_menu.nextval,?,?)";
+		  String sql="update menu set name=?,price=? where code=?";
 		  //String sql="insert into roomajax(roomcode,name,type,howmany,howmuch) "+
 		  //				"values(seq_roomajax.nextval,?,?,?,?)";
 		  String result_flag="";
 		  
 		  try {
-		  Class.forName("oracle.jdbc.driver.OracleDriver"); 
-		  request.setCharacterEncoding("utf-8");
-		  response.setContentType("text/html, charset=utf-8");
+		  Class.forName("oracle.jdbc.driver.OracleDriver"); 		  
 		   conn=DriverManager.getConnection(url,userid,passcode); 
 		   pstmt=conn.prepareStatement(sql);
+		   		 
+		   pstmt.setString(1,request.getParameter("_menuname"));
+		   pstmt.setInt(2,Integer.parseInt(request.getParameter("_price")));
+		   pstmt.setInt(3,Integer.parseInt(request.getParameter("_menucode")));
 		   
-		   pstmt.setString(1,request.getParameter("_menuname"));		   		
-		   pstmt.setInt(2,Integer.parseInt(request.getParameter("_price")));		  
 		   
 		   pstmt.executeUpdate(); 
 		   result_flag="OK";
@@ -66,7 +68,6 @@ public class insert extends HttpServlet {
 			  }
 		  }
 	}
-	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

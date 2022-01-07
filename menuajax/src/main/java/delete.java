@@ -13,16 +13,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class insert
+ * Servlet implementation class delete
  */
-@WebServlet("/insert")
-public class insert extends HttpServlet {
+@WebServlet("/delete")
+public class delete extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public insert() {
+    public delete() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,20 +37,19 @@ public class insert extends HttpServlet {
 		  String url="jdbc:oracle:thin:@localhost:1521:orcl";		 
 		  String userid="ora_user";
 		  String passcode="human123";
-		  String sql="insert into menu values(seq_menu.nextval,?,?)";
+		  String sql="delete from menu where code=?";
 		  //String sql="insert into roomajax(roomcode,name,type,howmany,howmuch) "+
 		  //				"values(seq_roomajax.nextval,?,?,?,?)";
 		  String result_flag="";
 		  
 		  try {
-		  Class.forName("oracle.jdbc.driver.OracleDriver"); 
-		  request.setCharacterEncoding("utf-8");
-		  response.setContentType("text/html, charset=utf-8");
+		  Class.forName("oracle.jdbc.driver.OracleDriver"); 		  
 		   conn=DriverManager.getConnection(url,userid,passcode); 
 		   pstmt=conn.prepareStatement(sql);
 		   
-		   pstmt.setString(1,request.getParameter("_menuname"));		   		
-		   pstmt.setInt(2,Integer.parseInt(request.getParameter("_price")));		  
+		   
+		   pstmt.setInt(1,Integer.parseInt(request.getParameter("_menucode")));
+		  
 		   
 		   pstmt.executeUpdate(); 
 		   result_flag="OK";
@@ -66,7 +65,6 @@ public class insert extends HttpServlet {
 			  }
 		  }
 	}
-	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

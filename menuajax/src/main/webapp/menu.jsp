@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 <title>Menu</title>
 </head>
 <style>
@@ -105,6 +106,9 @@ td.bound {
             <td>
                 <table>
                 <tr>
+                    <td>메뉴코드</td><td><input type=number id=_menucode></td>
+                </tr>
+                <tr>
                     <td>메뉴명</td><td><input type=text id=_menuname></td>
                 </tr>
                 <tr>
@@ -125,6 +129,7 @@ td.bound {
     </div>
 </body>
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
 let ar1=0;
 let ar;
@@ -141,7 +146,7 @@ $(document)
     		let rec=txt.split(';');
     		for(i=0; i<rec.length; i++){
     			let field=rec[i].split(',');
-    			let html='<option value='+field[0]+'>'+field[0]+' '+field[1]+'</option>';
+    			let html='<option value='+field[0]+'>'+field[0]+' '+field[1]+' '+field[2]+'</option>';
     			$('#selMenu1').append(html);	
     		}	   
     	},'text');
@@ -153,7 +158,7 @@ $(document)
     		let rec=txt.split(';');
     		for(i=0; i<rec.length; i++){
     			let field=rec[i].split(',');
-    			let html='<option value='+field[0]+'>'+field[0]+' '+field[1]+'</option>';
+    			let html='<option value='+field[0]+'>'+field[0]+' '+field[1]+' '+field[2]+'</option>';
     			$('#selMenu').append(html);	
     		}	   
     	},'text');
@@ -166,9 +171,116 @@ $(document)
     console.log(str);
     ar=str.split(' ');
     console.log(ar);
-    $('#menuname').val(ar[0]);
-    $('#price').val(ar[1]);
+    $('#menuname').val(ar[1]);
+    $('#price').val(ar[2]);   
     $('#qty').val(1);
+    
+})
+//주문목록 -> 판매내역
+.on('click','#btnDone',function(){
+	$('#selOrder option').each(function(){		
+		let str=$(this).text();
+		console.log(str);
+		let str1=str.split(' ');
+		console.log(str1);
+		$.get(operation,{code:$(ar[0]).val(),
+			mobile:$('#mobile').val(),
+			qty:$(str[1]).val(),
+			_price:$(str[2]).val()},
+			total:$('#total').val()},
+			function(txt){
+			$('#mobile,#total').val('');			
+		},'text');				
+return false;
+		if($('#mobile').val()==''){
+			$('#mobile').val('guest');
+		let str2='<option>'+$('#mobile').val()+' '+str1[0]+' '+str1[1]+' '+str1[2]+'</option>';
+		$('#selSales').append(str2);		
+		$('#selOrder').text('');
+		$('#total,#mobile').val('');		
+		ar1=0;
+		}else{			
+			let str2='<option>'+$('#mobile').val()+' '+str1[0]+' '+str1[1]+' '+str1[2]+'</option>';
+			$('#selSales').append(str2);
+			selinsert();
+			$('#selOrder').text('');
+			$('#total,#mobile').val('');
+			ar1=0;
+		}
+		
+		
+	});
+	
+	
+	
+	// 	if($('#mobile').val()==''){
+// 		$('#mobile').val('guest');
+// 		$('#selSales').append(str1);
+// 	    $('#selOrder').text('');
+// 	    $('#total,#mobile').val('');
+// 	    ar1=0;
+// 	}else{		
+// 		$('#selSales').append(str1);
+// 	    $('#selOrder').text('');
+// 	    $('#total,#mobile').val('');
+// 	    ar1=0;
+// 	}
+    
+})
+//메뉴관리 옵션 selected
+.on('click','#selMenu1',function(){
+    let str=$('#selMenu1 option:selected').text();   
+    console.log(str);
+    ar=str.split(' ');
+    console.log(ar);
+    $('#_menucode').val(ar[0]);
+    $('#_menuname').val(ar[1]);
+    $('#_price').val(ar[2]);    
+})
+//메뉴관리 insert
+.on('click','#btnPlus',function(){
+	let operation='';
+	if($('#_menucode').val()==''){
+		operation="insert";
+	}
+	$.get(operation,{_menucode:$('#_menucode').val(),
+					_menuname:$('#_menuname').val(),
+					_price:$('#_price').val()},
+		function(txt){
+						$('#_menuname,#_price,#_menucode').val();
+						loadmenu1();
+					},'text');				
+	return false;
+})
+//메뉴관리 delete
+.on('click','#btnMinus',function(){
+	let operation='';
+	if($('#_menucode').val()!=''){
+		operation="delete";
+	}
+	$.get(operation,{_menucode:$('#_menucode').val(),
+					_menuname:$('#_menuname').val(),
+					_price:$('#_price').val()},
+		function(txt){
+			$('#_menuname,#_price,#_menucode').val();
+			loadmenu1();
+			},'text');				
+	return false;
+})
+//메뉴관리 update
+.on('click','#btnUpdate',function(){
+	let operation='';
+	if($('#_menucode').val()!='' && $('#_menuname').val()!='' && $('#_price').val()!=''){
+		operation="update";
+	}
+		$.get(operation,{_menucode:$('#_menucode').val(),
+						_menuname:$('#_menuname').val(),
+						_price:$('#_price').val()},
+		function(txt){
+		$('#_menuname,#_price,#_menucode').val();
+		loadmenu1();
+		},'text');				
+		return false;
 })
 .on('click','#btnAdd',function(){
     let str='<option>'+$('#menuname').val()+' '+$('#qty').val()+' '+ $('#price').val()+'</option>';
@@ -179,28 +291,49 @@ $(document)
     ar1+=price;
     console.log(ar1);
     $('#total').val(ar1);
+    $('#menuname').val('');
+    $('#price').val('');   
+    $('#qty').val('');
 })
 .on('change','#qty',function(){
     let str=$('#qty').val();
-    $('#price').val(ar[1]*str);
+    $('#price').val(ar[2]*str);
 })
 .on('click','#btnCancel',function(){
 	$('#total').val(0);
 	$('#selOrder').text('');
 	ar1=0;
 })
+
 function loadmenu(){	
 	$('#selMenu').empty();
 	$.get('menuname',{},function(txt){		
 		let rec=txt.split(';');
 		for(i=0; i<rec.length; i++){
 			let field=rec[i].split(',');
-			let html='<option value='+field[0]+'>'+field[0]+' '+field[1]+'</option>';
+			let html='<option value='+field[0]+'>'+field[0]+' '+field[1]+' '+field[2]+'</option>';
 			$('#selMenu').append(html);	
 		}	   
 	},'text');
 	return false;
 }
+function loadmenu1(){	
+	$('#selMenu1').empty();
+	$.get('menuname',{},function(txt){		
+		let rec=txt.split(';');
+		for(i=0; i<rec.length; i++){
+			let field=rec[i].split(',');
+			let html='<option value='+field[0]+'>'+field[0]+' '+field[1]+' '+field[2]+'</option>';
+			$('#selMenu1').append(html);	
+		}	   
+	},'text');
+	return false;
+}
+
+//selMenu insert 함수
+
+
+
 </script>
 
 
