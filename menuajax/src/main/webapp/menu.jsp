@@ -69,7 +69,7 @@ td.bound {
                     </tr>
                     <tr>
                         <td>모바일</td>
-                        <td><input type=phone id=mobile size=13></td>
+                        <td><input type=text id=mobile size=13></td>
                     </tr>
                     <tr>
                         <td colspan="2">&nbsp;</td>
@@ -178,38 +178,34 @@ $(document)
 })
 //주문목록 -> 판매내역
 .on('click','#btnDone',function(){
-	$('#selOrder option').each(function(){		
-		let str=$(this).text();
-		console.log(str);
+	let operation='';
+	if($('#mobile').text()=='') $('#mobile').text('-');	
+	$('#selOrder option').each(function(){				
+		let str=$(this).text();		
 		let str1=str.split(' ');
-		console.log(str1);
-		$.get(operation,{code:$(ar[0]).val(),
-			mobile:$('#mobile').val(),
-			qty:$(str[1]).val(),
-			_price:$(str[2]).val()},
-			total:$('#total').val()},
-			function(txt){
-			$('#mobile,#total').val('');			
-		},'text');				
-return false;
-		if($('#mobile').val()==''){
-			$('#mobile').val('guest');
-		let str2='<option>'+$('#mobile').val()+' '+str1[0]+' '+str1[1]+' '+str1[2]+'</option>';
+		let str2='<option>'+$('#mobile').text()+' '+str1[0]+' '+str1[1]+' '+str1[2]+'</option>';
 		$('#selSales').append(str2);		
-		$('#selOrder').text('');
-		$('#total,#mobile').val('');		
-		ar1=0;
-		}else{			
-			let str2='<option>'+$('#mobile').val()+' '+str1[0]+' '+str1[1]+' '+str1[2]+'</option>';
-			$('#selSales').append(str2);
-			selinsert();
-			$('#selOrder').text('');
-			$('#total,#mobile').val('');
-			ar1=0;
-		}
 		
+						
+		
+// operation="selMenu";
+// $.get(operation,{code:$(ar[0]).val(),
+// 	mobile:$('#mobile').text(),
+// 	qty:$(str[1]).val(),
+// 	_price:$(str[2]).val(),
+// 	total:$('#total').val()},
+// function(txt){
+// $('#mobile').text('');
+// $('#selOrder').text('');
+// $('#total').val('');
+// ar1=0;
+// },'text');
 		
 	});
+	$('#selOrder').text('');
+	$('#mobile').text('');
+	$('#total').val('');		
+	ar1=0;
 	
 	
 	

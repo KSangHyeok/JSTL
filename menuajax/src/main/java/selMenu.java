@@ -37,7 +37,7 @@ public class selMenu extends HttpServlet {
 		  String url="jdbc:oracle:thin:@localhost:1521:orcl";		 
 		  String userid="ora_user";
 		  String passcode="human123";
-		  String sql="insert into cafe_sales values(?,?,seq_sales,?,?,?)";
+		  String sql="insert into cafe_sales values(?,?,seq_sales.nextval,?,?,sysdate)";
 		  //String sql="insert into roomajax(roomcode,name,type,howmany,howmuch) "+
 		  //				"values(seq_roomajax.nextval,?,?,?,?)";
 		  String result_flag="";
@@ -50,10 +50,9 @@ public class selMenu extends HttpServlet {
 		   pstmt=conn.prepareStatement(sql);
 		   
 		   pstmt.setInt(1,Integer.parseInt(request.getParameter("code")));
-		   pstmt.setInt(2,Integer.parseInt(request.getParameter("mobile")));
-		   pstmt.setInt(3,Integer.parseInt(request.getParameter("qty")));
-		   pstmt.setInt(3,Integer.parseInt(request.getParameter("_price")));
-		   pstmt.setInt(3,Integer.parseInt(request.getParameter("total")));
+		   pstmt.setString(2,request.getParameter("mobile"));
+		   pstmt.setInt(3,Integer.parseInt(request.getParameter("qty")));		   
+		   pstmt.setInt(4,Integer.parseInt(request.getParameter("total")));		   
 		   
 		   
 		   pstmt.executeUpdate(); 
