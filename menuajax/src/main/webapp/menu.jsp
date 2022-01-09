@@ -132,7 +132,6 @@ td.bound {
 <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
 let ar1=0;
-let ar;
 $(document)
 .ready(function(){	
 	loadmenu();	
@@ -169,7 +168,7 @@ $(document)
 .on('click','#selMenu',function(){
     let str=$('#selMenu option:selected').text();   
     console.log(str);
-    ar=str.split(' ');
+    let ar=str.split(' ');
     console.log(ar);
     $('#menuname').val(ar[1]);
     $('#price').val(ar[2]);   
@@ -178,56 +177,33 @@ $(document)
 })
 //주문목록 -> 판매내역
 .on('click','#btnDone',function(){
-	let operation='';
+		
 	if($('#mobile').text()=='') $('#mobile').text('-');	
 	$('#selOrder option').each(function(){				
 		let str=$(this).text();		
 		let str1=str.split(' ');
 		let str2='<option>'+$('#mobile').text()+' '+str1[0]+' '+str1[1]+' '+str1[2]+'</option>';
-		$('#selSales').append(str2);		
-		
-						
-		
-// operation="selMenu";
-// $.get(operation,{code:$(ar[0]).val(),
-// 	mobile:$('#mobile').text(),
-// 	qty:$(str[1]).val(),
-// 	_price:$(str[2]).val(),
-// 	total:$('#total').val()},
-// function(txt){
-// $('#mobile').text('');
-// $('#selOrder').text('');
-// $('#total').val('');
-// ar1=0;
-// },'text');
-		
+		$('#selSales').append(str2);
+				
+		$.get("selMenu",{code:$(ar[0]).val(),
+		 				mobile:$('#mobile').text(),
+		 				qty:$(str[1]).val(),		 				
+		 				total:$('#total').val()},
+		function(txt){		
+		},'text');
 	});
 	$('#selOrder').text('');
 	$('#mobile').text('');
 	$('#total').val('');		
 	ar1=0;
 	
-	
-	
-	// 	if($('#mobile').val()==''){
-// 		$('#mobile').val('guest');
-// 		$('#selSales').append(str1);
-// 	    $('#selOrder').text('');
-// 	    $('#total,#mobile').val('');
-// 	    ar1=0;
-// 	}else{		
-// 		$('#selSales').append(str1);
-// 	    $('#selOrder').text('');
-// 	    $('#total,#mobile').val('');
-// 	    ar1=0;
-// 	}
-    
+
 })
 //메뉴관리 옵션 selected
 .on('click','#selMenu1',function(){
     let str=$('#selMenu1 option:selected').text();   
     console.log(str);
-    ar=str.split(' ');
+    let ar=str.split(' ');
     console.log(ar);
     $('#_menucode').val(ar[0]);
     $('#_menuname').val(ar[1]);
@@ -279,7 +255,12 @@ $(document)
 		return false;
 })
 .on('click','#btnAdd',function(){
-    let str='<option>'+$('#menuname').val()+' '+$('#qty').val()+' '+ $('#price').val()+'</option>';
+	let code1=$(this).text();
+	console.log(code1);
+	let code=code1.split(' ');
+//     let str='<option>'+$('#menuname').val()+' '+$('#qty').val()+' '+ $('#price').val()+'</option>';
+	console.log(code);
+	let str='<option>'+code[0]+' '+code[1]+' '+$('#qty').val()+' '+code[2]+'</option>';
     $('#selOrder').append(str);
     let price=$('#price').val();
     price=parseInt(price);
