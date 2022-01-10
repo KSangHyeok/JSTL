@@ -10,22 +10,25 @@
 <style>
 table.bound {   
     border-collapse: collapse;
-    border:2px solid gray;
+    border:1px solid black;
     height: 400px;
     width: 260px;
 }
 td.bound {
     border:2px solid gray;
 }    
-#selMenu,#selOrder,#selSales,#selMenu1{
-    width:240px; align:right;
+#selMenu,#selOrder,#selSales,#selMenu1,#selMenu2,#selMenu3{
+    width:240px; 
+}
+#dlgMenu{
+	width:600px; height:300px;
 }
 </style>
 <body>
 <table align=center>
 	<tr>
 		<td>
-			<table>
+			<table class='bound'>
 			<caption>메뉴목록</caption>
 				<tr>
 					<td align=right colspan=2>
@@ -90,7 +93,10 @@ td.bound {
                     </tr>
                     <tr>
                         <td>
-                            <button id=clean>초기화</button>
+                            <button type=reset id=clean>초기화</button>
+                        </td>
+                        <td>
+                        <button id=s>보보</button>
                         </td>
                     </tr>
                 </table>
@@ -116,22 +122,33 @@ td.bound {
                 </tr>
                 <tr>
                     <td  colspan=2 align=center>
-                        <button id=btnPlus>추가</button>&nbsp;
-                        <button id=btnMinus>삭제</button>&nbsp;
-                        <button id=btnUpdate>변경</button>&nbsp;
+                        <button id=btnPlus>전송</button>
                     </td>
                 </tr>
                 </table>
             </td>
         </tr>    
-        </table>
-    
+        </table>    
     </div>
+    <div id=dlgMenu1 style=display:none title='메뉴별 매출' >
+       <table>
+        <tr>
+            <td>
+                <select id=selMenu2 size=10></select>
+            </td>   
+            <td>
+                <select id=selMenu3 size=10></select>
+            </td>            
+        </tr>    
+        </table>    
+    </div>
+
 </body>
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
 let ar1=0;
+let ar='';
 $(document)
 .ready(function(){	
 	loadmenu();	
@@ -168,7 +185,7 @@ $(document)
 .on('click','#selMenu',function(){
     let str=$('#selMenu option:selected').text();   
     console.log(str);
-    let ar=str.split(' ');
+    ar=str.split(' ');
     console.log(ar);
     $('#menuname').val(ar[1]);
     $('#price').val(ar[2]);   
@@ -176,24 +193,22 @@ $(document)
     
 })
 //주문목록 -> 판매내역
-.on('click','#btnDone',function(){
-		
-	if($('#mobile').text()=='') $('#mobile').text('-');	
+.on('click','#btnDone',function(){		
+	if($('#mobile').val()=='') $('#mobile').val('-');	
 	$('#selOrder option').each(function(){				
 		let str=$(this).text();		
-		let str1=str.split(' ');
-		let str2='<option>'+$('#mobile').text()+' '+str1[0]+' '+str1[1]+' '+str1[2]+'</option>';
-		$('#selSales').append(str2);
-				
-		$.get("selMenu",{code:$(ar[0]).val(),
-		 				mobile:$('#mobile').text(),
-		 				qty:$(str[1]).val(),		 				
-		 				total:$('#total').val()},
+		let str1=str.split(' ');		
+		let str2='<option>'+str1[0]+' '+$('#mobile').val()+' '+str1[1]+' '+str1[2]+' '+str1[3]+'</option>';
+		$('#selSales').append(str2);		
+		$.get("selMenu",{code:str1[0],
+		 				mobile:$('#mobile').val(),
+		 				qty:str1[2],		 				
+		 				total:str1[3]},
 		function(txt){		
 		},'text');
 	});
 	$('#selOrder').text('');
-	$('#mobile').text('');
+	$('#mobile').val('');
 	$('#total').val('');		
 	ar1=0;
 	
@@ -212,8 +227,14 @@ $(document)
 //메뉴관리 insert
 .on('click','#btnPlus',function(){
 	let operation='';
-	if($('#_menucode').val()==''){
-		operation="insert";
+	if($('#_menucode').val()==''){		
+			operation="insert";		 		
+	}else if($('#_menucode').val()!=''){
+		if($('#_menuname').val()!='' && $('#_price').val()!=''){
+			operation="update";
+		}else{
+			operation="delete";
+		}
 	}
 	$.get(operation,{_menucode:$('#_menucode').val(),
 					_menuname:$('#_menuname').val(),
@@ -224,43 +245,10 @@ $(document)
 					},'text');				
 	return false;
 })
-//메뉴관리 delete
-.on('click','#btnMinus',function(){
-	let operation='';
-	if($('#_menucode').val()!=''){
-		operation="delete";
-	}
-	$.get(operation,{_menucode:$('#_menucode').val(),
-					_menuname:$('#_menuname').val(),
-					_price:$('#_price').val()},
-		function(txt){
-			$('#_menuname,#_price,#_menucode').val();
-			loadmenu1();
-			},'text');				
-	return false;
-})
-//메뉴관리 update
-.on('click','#btnUpdate',function(){
-	let operation='';
-	if($('#_menucode').val()!='' && $('#_menuname').val()!='' && $('#_price').val()!=''){
-		operation="update";
-	}
-		$.get(operation,{_menucode:$('#_menucode').val(),
-						_menuname:$('#_menuname').val(),
-						_price:$('#_price').val()},
-		function(txt){
-		$('#_menuname,#_price,#_menucode').val();
-		loadmenu1();
-		},'text');				
-		return false;
-})
-.on('click','#btnAdd',function(){
-	let code1=$(this).text();
-	console.log(code1);
-	let code=code1.split(' ');
-//     let str='<option>'+$('#menuname').val()+' '+$('#qty').val()+' '+ $('#price').val()+'</option>';
-	console.log(code);
-	let str='<option>'+code[0]+' '+code[1]+' '+$('#qty').val()+' '+code[2]+'</option>';
+.on('click','#btnAdd',function(){		
+	console.log(ar);
+    let str='<option>'+ar[0]+' '+$('#menuname').val()+' '+$('#qty').val()+' '+ $('#price').val()+'</option>';	
+// 	let str='<option>'+code[0]+' '+code[1]+' '+$('#qty').val()+' '+code[2]+'</option>';
     $('#selOrder').append(str);
     let price=$('#price').val();
     price=parseInt(price);
@@ -273,7 +261,7 @@ $(document)
     $('#qty').val('');
 })
 .on('change','#qty',function(){
-    let str=$('#qty').val();
+    let str=$('#qty').val();    
     $('#price').val(ar[2]*str);
 })
 .on('click','#btnCancel',function(){
@@ -281,6 +269,41 @@ $(document)
 	$('#selOrder').text('');
 	ar1=0;
 })
+.on('click','#s',function() {
+      $('#dlgMenu1').dialog({
+         width:560,
+         open:function() {        	 
+        	 $.get('dlgmenu', {}, function(txt) {
+        	        if (txt == "")
+        	           return false;
+        	        let rec = txt.split(';');
+        	        for (i = 0; i < rec.length; i++) {
+        	           let field = rec[i].split(',');
+        	           console.log(field);
+        	           let html ='<option>'+field[0]+' '+field[1]+' '+field[2]+'</option>';
+        	           console.log(html);
+        	           $('#selMenu2').append(html);
+        	        }
+        	  },'text')
+          $.get('dlgmenu1', {}, function(txt) {
+        if (txt == "")
+           return false;
+        let rec = txt.split(';');
+        for (i = 0; i < rec.length; i++) {
+           let field = rec[i].split(',');
+           console.log(field);
+           let html ='<option>'+field[0]+' '+field[1]+'</option>';
+           console.log(html);
+           $('#selMenu3').append(html);
+        }
+  },'text')
+          },
+          close:function() {
+             $('#selMenu2').empty();
+             $('#selMenu3').empty();
+         }
+         });
+      })
 
 function loadmenu(){	
 	$('#selMenu').empty();
@@ -306,8 +329,6 @@ function loadmenu1(){
 	},'text');
 	return false;
 }
-
-//selMenu insert 함수
 
 
 

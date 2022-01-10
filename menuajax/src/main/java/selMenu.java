@@ -37,9 +37,8 @@ public class selMenu extends HttpServlet {
 		  String url="jdbc:oracle:thin:@localhost:1521:orcl";		 
 		  String userid="ora_user";
 		  String passcode="human123";
-		  String sql="insert into cafe_sales values(?,?,seq_sales.nextval,?,?,sysdate)";
-		  //String sql="insert into roomajax(roomcode,name,type,howmany,howmuch) "+
-		  //				"values(seq_roomajax.nextval,?,?,?,?)";
+		  String sql="insert into cafe_sales(code,menu_code,mobile,qty,total,sold_time) values(seq_sales.nextval,?,?,?,?,sysdate)";
+		  
 		  String result_flag="";
 		  
 		  try {
@@ -53,8 +52,7 @@ public class selMenu extends HttpServlet {
 		   pstmt.setString(2,request.getParameter("mobile"));
 		   pstmt.setInt(3,Integer.parseInt(request.getParameter("qty")));		   
 		   pstmt.setInt(4,Integer.parseInt(request.getParameter("total")));		   
-		   
-		   
+		   		   
 		   pstmt.executeUpdate(); 
 		   result_flag="OK";
 		  }catch(Exception e) {
