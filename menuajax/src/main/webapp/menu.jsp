@@ -5,25 +5,13 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<link rel='stylesheet' type='text/css' href='menucss.css'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Single+Day&display=swap" rel="stylesheet">
 <title>Menu</title>
 </head>
-<style>
-table.bound {   
-    border-collapse: collapse;
-    border:1px solid black;
-    height: 400px;
-    width: 260px;
-}
-td.bound {
-    border:2px solid gray;
-}    
-#selMenu,#selOrder,#selSales,#selMenu1,#selMenu2,#selMenu3{
-    width:240px; 
-}
-#dlgMenu{
-	width:600px; height:300px;
-}
-</style>
+
 <body>
 <table align=center>
 	<tr>
@@ -35,7 +23,7 @@ td.bound {
 					<button id=btnMenu>메뉴관리</button>
 					</td>
 				</tr>
-				 <tr>
+				 <tr valign=middle>
                         <td colspan=2>
                             <select id=selMenu size=13></select>
                         </td>
@@ -61,9 +49,10 @@ td.bound {
             <td valign=top>
                 <table class='bound'>
                     <caption id=capt1>주문목록</caption>
-                    <tr>
+                    <tr><td><br></td></tr>
+                    <tr valign=middle>
                         <td colspan="2">
-                            <select id=selOrder size=14></select>
+                            <select id=selOrder size=13></select>
                         </td>
                     </tr>
                     <tr>
@@ -86,7 +75,8 @@ td.bound {
             <td valign=top>
                 <table class='bound' >
                     <caption id=capt1>판매내역</caption>
-                    <tr>
+                    <tr><td><br><br></td></tr>
+                    <tr valign=top>
                         <td>
                             <select id=selSales size=17></select>
                         </td>
@@ -94,10 +84,8 @@ td.bound {
                     <tr>
                         <td>
                             <button type=reset id=clean>초기화</button>
-                        </td>
-                        <td>
-                        <button id=s>보보</button>
-                        </td>
+                            <button id=s align=right>summary</button>
+                        </td>                        
                     </tr>
                 </table>
             </td>
@@ -130,9 +118,17 @@ td.bound {
         </tr>    
         </table>    
     </div>
-    <div id=dlgMenu1 style=display:none title='메뉴별 매출' >
+    <div id=dlgMenu1 style=display:none title='판매목록' >
        <table>
         <tr>
+        	<td>
+        	메뉴별 판매량
+        	</td>
+        	<td>
+        	고객별 판매금액
+        	</td>
+        </tr>
+        <tr>        	
             <td>
                 <select id=selMenu2 size=10></select>
             </td>   
@@ -156,7 +152,8 @@ $(document)
 		})
 .on('click','#btnMenu',function(){
 	$('#dlgMenu').dialog({
-	open:function(){
+		width:730,
+	open:function(){		
         $('#selMenu1').empty();
         $.get('menuname',{},function(txt){		
     		let rec=txt.split(';');
@@ -194,7 +191,7 @@ $(document)
 })
 //주문목록 -> 판매내역
 .on('click','#btnDone',function(){		
-	if($('#mobile').val()=='') $('#mobile').val('-');	
+	if($('#mobile').val()=='') $('#mobile').val('-');
 	$('#selOrder option').each(function(){				
 		let str=$(this).text();		
 		let str1=str.split(' ');		
@@ -271,7 +268,7 @@ $(document)
 })
 .on('click','#s',function() {
       $('#dlgMenu1').dialog({
-         width:560,
+         width:700,
          open:function() {        	 
         	 $.get('dlgmenu', {}, function(txt) {
         	        if (txt == "")
