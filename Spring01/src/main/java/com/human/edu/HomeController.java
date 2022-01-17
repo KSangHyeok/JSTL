@@ -10,8 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -36,28 +39,34 @@ public class HomeController {
 	}
 
 	@RequestMapping("/doLogin")
-		public String doLogin(HttpServletRequest hsr, Model model) {
-			String userid=hsr.getParameter("userid");
-			if(userid.equals("")) {
-				return "login";
+		public String doLogin(@RequestParam("userid") String id,
+								@RequestParam("passcode") String pw,
+				Model model) {
+			
+			if(id.equals("")) {
+				return "redirect:login";
 			}else {
-				model.addAttribute("id",userid);
+				model.addAttribute("userid",id);
+				model.addAttribute("passcode",pw);
 				return "home";
 			}
 			
 		}
+
+	
 	@RequestMapping("/signon")
 	public String signon() {					
 			return "signon";
 	}
 	@RequestMapping("/signon_check")
-	public String sign(HttpServletRequest hsr, Model model) {		
-			String name=hsr.getParameter("realname");
-			if(name.equals("")) {
-				return "signon";
-			}else {
-				return "login";
-			}			
+	public String sign(@ModelAttribute("m") Member member) {	
+		return "personal";
+//			String name=member.getRealname();
+//			if(name.equals("")) {
+//				return "signon";
+//			}else {
+//				return "login";
+//			}			
 	}
 	@RequestMapping("/signon_can")
 	public String signon_check() {					
@@ -65,6 +74,6 @@ public class HomeController {
 	}
 	@RequestMapping("/logout")
 	public String logout() {					
-			return "home";
+			return "redirect:home";
 	}
 }
