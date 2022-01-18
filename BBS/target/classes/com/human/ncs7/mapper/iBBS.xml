@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.human.ncs7.Ibbs">
+<select id="getList" resultType="com.human.ncs7.Post">
+select id,name,title,content,created,hit,kind,step,indent
+	from mvc_board
+	order by id
+</select>
+<select id="getView" resultType="com.human.ncs7.Post">
+	select id,name,title,content,created,hit,kind,step,indent
+	from mvc_board
+	where id=#{param1}
+</select>
+<insert id="writePost">
+	insert into mvc_board(id,title,name,content,kind,step,indent)
+	values(seq_board.nextval,#{param1},#{param2},#{param3},seq_board.currval,0,0)
+</insert>
+</mapper>
