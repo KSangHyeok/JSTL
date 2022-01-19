@@ -13,6 +13,7 @@
 </head>
 
 <body>
+<h1 align="center" style="font-size:30px">Cafe Menu</h1><hr>
 <table align=center>
 	<tr>
 		<td>
@@ -61,7 +62,7 @@
                     </tr>
                     <tr>
                         <td>모바일</td>
-                        <td><input type=text id=mobile size=13></td>
+                        <td><input type=text id=mobile></td>
                     </tr>
                     <tr>
                         <td colspan="2">&nbsp;</td>
@@ -301,7 +302,11 @@ $(document)
          }
          });
       })
-
+.on('click','#btnReset',function(){
+	$('#menuname').val('');
+	$('#qty').val('');
+	$('#price').val('');
+})
 function loadmenu(){	
 	$('#selMenu').empty();
 	$.get('menuname',{},function(txt){		
