@@ -11,9 +11,9 @@
 <style>
 td, th{ border:1px solid blue;}
 </style>
-<body>
+<body align=center>
 <form method=post action="/ncs7/write" id=frmWrite>
-<table style='border-collapse:collapse;'>
+<table style='border-collapse:collapse;' align=center>
 <tr><td>제목</td><td><input type=text id=title name=title></td></tr>
 <tr><td>작성자</td><td><input type=text id=name name=name></td></tr>
 <tr><td>내용</td><td><textarea id=content name=content></textarea>
@@ -38,6 +38,7 @@ $(document)
 	return true;
 })
 .on('click','#btnCancel',function(){
+	alert("목록보기를 누르셨네용?");
 	document.location='/ncs7/list';
 	return false;
 })

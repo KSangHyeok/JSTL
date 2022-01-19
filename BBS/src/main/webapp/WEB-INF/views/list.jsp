@@ -11,8 +11,8 @@
 <style>
 td, th{ border:1px solid blue;}
 </style>
-<body>
-<table style='border-collapse:collapse;'>
+<body align=center>
+<table style='border-collapse:collapse;' align=center>
 <thead>
 	<tr><th>게시물번호</th><th>제목</th><th>작성자</th><th>작성시각</th><th>조회수</th></tr>
 </thead>

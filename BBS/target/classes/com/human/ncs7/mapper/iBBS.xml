@@ -17,4 +17,14 @@ select id,name,title,content,created,hit,kind,step,indent
 	insert into mvc_board(id,title,name,content,kind,step,indent)
 	values(seq_board.nextval,#{param1},#{param2},#{param3},seq_board.currval,0,0)
 </insert>
+<delete id="deletePost">
+	delete from mvc_board where id=#{param1}
+</delete>
+<update id="modifyPost">
+	update mvc_board set title=#{param2},name=#{param3},content=#{param4} 
+	where id=#{param1}
+</update>
+<update id="plusHit">
+	update mvc_board set hit=hit+1 where id=#{param1}
+</update>
 </mapper>
