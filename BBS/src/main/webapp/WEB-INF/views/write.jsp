@@ -11,7 +11,7 @@
 <style>
 td, th{ border:1px solid blue;}
 </style>
-<body align=center>
+<body align=center>	
 <form method=post action="/ncs7/write" id=frmWrite>
 <table style='border-collapse:collapse;' align=center>
 <tr><td>제목</td><td><input type=text id=title name=title></td></tr>

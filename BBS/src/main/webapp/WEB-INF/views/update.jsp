@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>게시물 수정</title>
 </head>
-<body align=center>
+<body align=center>	
 <form method=post action='/ncs7/modify' id=frmModify>
 <input type=hidden id=post_id name=post_id value="${post.id}">
 <table style='border-collapse: collapse;' align=center>
